@@ -1,0 +1,7 @@
+name: CynagenTag
+version: '${project.version}'
+main: me.kyrobi.cynagentag.CynagenTag
+api-version: '1.20'
+commands:
+  tagg:
+    description: "Starts the tag minigame"
