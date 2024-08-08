@@ -11,6 +11,7 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 
+import java.lang.reflect.Array;
 import java.util.*;
 
 public class TagHandler implements Listener {
@@ -20,13 +21,17 @@ public class TagHandler implements Listener {
     public static HashMap<String, Integer> taggedCounter = new HashMap<>();
     public static boolean hasGameStarted = false;
     public static ArrayList<Player> onlinePlayers = new ArrayList<>();
+
+    public static Queue<Player> extraTaggers = new LinkedList<>();
     public TagHandler(final CynagenTag plugin){
         this.plugin = plugin;
         plugin.getServer().getPluginManager().registerEvents(this, plugin);
 
         for(Player player: Bukkit.getOnlinePlayers()){
             onlinePlayers.add(player);
+            extraTaggers.add(player);
         }
+
     }
 
     @EventHandler
@@ -72,6 +77,7 @@ public class TagHandler implements Listener {
     public void onPlayerLeave(PlayerQuitEvent e){
         Player player = e.getPlayer();
         onlinePlayers.remove(player);
+        extraTaggers.remove(player);
 
         if((currentlyTagged.contains(player)) && hasGameStarted){
             currentlyTagged.remove(player);
@@ -84,6 +90,7 @@ public class TagHandler implements Listener {
 
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent e){
+        extraTaggers.add(e.getPlayer());
         onlinePlayers.add(e.getPlayer());
     }
 }

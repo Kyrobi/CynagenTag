@@ -34,6 +34,8 @@ public class TagCommand implements CommandExecutor {
                 Player setIt = onlinePlayers.get(0);
                 currentlyTagged.add(setIt);
 
+                extraTaggers.remove(setIt); // Remove it to that it can't pick this again
+
                 Bukkit.broadcastMessage(ChatColor.GOLD + setIt.getName() + ChatColor.GREEN + " is it!");
                 setIt.setGlowing(true);
             }
@@ -45,6 +47,12 @@ public class TagCommand implements CommandExecutor {
                 for(Player onlinePlayers: Bukkit.getOnlinePlayers()){
                     onlinePlayers.setGlowing(false);
                 }
+            }
+
+            else if(tagCommand.equals("more")){
+                Player extraIt = extraTaggers.remove();
+                currentlyTagged.add(extraIt);
+                Bukkit.broadcastMessage(ChatColor.GOLD + player.getName() + " is now ALSO it!");
             }
 
             else if(tagCommand.equals("clearglow")){
